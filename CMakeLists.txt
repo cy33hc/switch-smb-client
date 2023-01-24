@@ -56,7 +56,6 @@ target_compile_definitions(${TARGET} PUBLIC
   )
 
 target_link_libraries(${TARGET} PUBLIC
-  smb2
   glad
   EGL
   glapi
@@ -66,6 +65,7 @@ target_link_libraries(${TARGET} PUBLIC
   png
   m
   z
+  smb2
 )
 
 target_include_directories(${TARGET} PUBLIC

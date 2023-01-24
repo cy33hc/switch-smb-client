@@ -27,7 +27,10 @@ int SmbClient::Connect(const char *host, unsigned short port, const char *share,
 	}
 	char server[64];
 	sprintf(server, "%s:%d", host, port);
-	smb2_set_password(smb2, pass);
+	if (strlen(pass)>0)
+	{
+		smb2_set_password(smb2, pass);
+	}
 	smb2_set_security_mode(smb2, SMB2_NEGOTIATE_SIGNING_ENABLED);
 	smb2_set_timeout(smb2, 30);
 

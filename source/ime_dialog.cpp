@@ -1,15 +1,14 @@
 #include <switch.h>
 #include <string>
-#include <cstring>
 #include "ime_dialog.h"
 
 static int ime_dialog_running = 0;
 static int ime_dialog_option = 0;
 
-static SwkbdConfig swkbd;
-static char *ime_initial_text = NULL;
-static char ime_title[512];
-static char ime_input_text[512 + 1];
+SwkbdConfig swkbd;
+char ime_initial_text[512+1];
+char ime_title[64];
+char ime_input_text[512+1];
 
 namespace Dialog
 {
@@ -18,12 +17,9 @@ namespace Dialog
     if (ime_dialog_running)
       return IME_DIALOG_ALREADY_RUNNING;
 
-    ime_initial_text = initial_text;
+    snprintf(ime_title, 63, "%s", title);
+    snprintf(ime_initial_text, 512, "%s", initial_text);
 
-    sprintf(ime_title, "%s", title);
-    sprintf(ime_initial_text, "%s", initial_text);
-
-    memset(&swkbd, 0, sizeof(SwkbdConfig));
     if (R_FAILED(swkbdCreate(&swkbd, 0)))
     {
       swkbdClose(&swkbd);

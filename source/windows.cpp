@@ -147,7 +147,7 @@ namespace Windows
         ImGuiStyle *style = &ImGui::GetStyle();
         ImVec4 *colors = style->Colors;
         static char title[32];
-        sprintf(title, "%s", lang_strings[STR_CONNECTION_SETTINGS]);
+        sprintf(title, "SMB %s", lang_strings[STR_CONNECTION_SETTINGS]);
         BeginGroupPanel(title, ImVec2(1265, 100));
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 10);
         char id[256];
@@ -301,8 +301,6 @@ namespace Windows
             Dialog::initImeDialog(lang_strings[STR_PORT], txt_server_port, 5, SwkbdType_NumPad, 0, 0);
             gui_mode = GUI_MODE_IME;
         }
-        ImGui::SameLine();
-
         ImGui::PopStyleVar();
 
         ImGui::Dummy(ImVec2(0, 10));

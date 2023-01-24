@@ -13,7 +13,6 @@ namespace Services
 {
   int Init(void)
   {
-
     plInitialize(PlServiceType_User);
     romfsInit();
     socketInitializeDefault();

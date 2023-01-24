@@ -75,7 +75,7 @@ char lang_strings[LANG_STRINGS_NUM][LANG_STR_SIZE] = {
 	"Link",															  // STR_LINK
 	"Share",														  // STR_SHARE
 	"310 Failed",													  // STR_FAILED
-	"310 Failed to create file on local",							  // STR_FAIL_CREATE_LOCAL_FILE_MSG
+	"310 Failed to create file on local"							  // STR_FAIL_CREATE_LOCAL_FILE_MSG
 };
 
 bool needs_extended_font = false;

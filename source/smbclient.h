@@ -4,7 +4,6 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <time.h>
-#include <fcntl.h>
 #include <string>
 #include <vector>
 #include <smb2/smb2.h>
@@ -12,13 +11,10 @@
 #include "fs.h"
 
 #define SMB_CLIENT_MAX_FILENAME_LEN 256
-#define MAX_BUFF_SIZE 131072
 
 class SmbClient
 {
 public:
-	SmbClient();
-	~SmbClient();
 	int Connect(const char *host, unsigned short port, const char *share, const char *user, const char *pass);
 	int Mkdir(const char *path);
 	int Rmdir(const char *path, bool recursive);

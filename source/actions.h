@@ -32,9 +32,9 @@ enum ACTIONS
     ACTION_REMOTE_SELECT_ALL,
     ACTION_LOCAL_CLEAR_ALL,
     ACTION_REMOTE_CLEAR_ALL,
-    ACTION_CONNECT_FTP,
-    ACTION_DISCONNECT_FTP,
-    ACTION_DISCONNECT_FTP_AND_EXIT
+    ACTION_CONNECT_SMB,
+    ACTION_DISCONNECT_SMB,
+    ACTION_DISCONNECT_SMB_AND_EXIT
 };
 
 enum OverWriteType
@@ -45,7 +45,7 @@ enum OverWriteType
 };
 
 static Thread bk_activity_thid;
-static Thread ftp_keep_alive_thid;
+static Thread smb_keep_alive_thid;
 
 namespace Actions
 {
@@ -58,8 +58,8 @@ namespace Actions
     void HandleRefreshRemoteFiles();
     void CreateNewLocalFolder(char *new_folder);
     void CreateNewRemoteFolder(char *new_folder);
-    void RenameLocalFolder(const char *old_path, const char *new_path);
-    void RenameRemoteFolder(const char *old_path, const char *new_path);
+    void RenameLocalFolder(char *old_path, char *new_path);
+    void RenameRemoteFolder(char *old_path, char *new_path);
     void DeleteSelectedLocalFilesThread(void *argp);
     void DeleteSelectedLocalFiles();
     void DeleteSelectedRemotesFilesThread(void *argp);
@@ -68,8 +68,8 @@ namespace Actions
     void UploadFiles();
     void DownloadFilesThread(void *argp);
     void DownloadFiles();
-    void ConnectFTP();
-    void DisconnectFTP();
+    void ConnectSMB();
+    void DisconnectSMB();
     void SelectAllLocalFiles();
     void SelectAllRemoteFiles();
 }

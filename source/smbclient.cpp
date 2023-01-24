@@ -9,20 +9,13 @@
 #include <stdlib.h>
 #include <inttypes.h>
 #include <errno.h>
+#include <fcntl.h>
 #include "lang.h"
 #include "smbclient.h"
 #include "windows.h"
 #include "util.h"
 
 #define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
-
-SmbClient::SmbClient()
-{
-}
-
-SmbClient::~SmbClient()
-{
-}
 
 int SmbClient::Connect(const char *host, unsigned short port, const char *share, const char *user, const char *pass)
 {
@@ -43,6 +36,8 @@ int SmbClient::Connect(const char *host, unsigned short port, const char *share,
 		sprintf(response, "%s", smb2_get_error(smb2));
 		return 0;
 	}
+	max_read_size = smb2_get_max_read_size(smb2);
+	max_write_size = smb2_get_max_write_size(smb2);
 	connected = true;
 
 	return 1;
@@ -199,10 +194,10 @@ int SmbClient::Get(const char *outputfile, const char *ppath)
 		return 0;
 	}
 
-	uint8_t *buff = (uint8_t*)malloc(MAX_BUFF_SIZE);
+	uint8_t *buff = (uint8_t*)malloc(max_read_size);
 	int count = 0;
 	bytes_transfered = 0;
-	while ((count = smb2_read(smb2, in, buff, MAX_BUFF_SIZE)) > 0)
+	while ((count = smb2_read(smb2, in, buff, max_read_size)) > 0)
 	{
 		if (count < 0)
 		{
@@ -267,10 +262,10 @@ int SmbClient::Put(const char *inputfile, const char *ppath)
 		return 0;
 	}
 
-	uint8_t* buff = (uint8_t*)malloc(MAX_BUFF_SIZE);
+	uint8_t* buff = (uint8_t*)malloc(max_write_size);
 	int count = 0;
 	bytes_transfered = 0;
-	while ((count = FS::Read(in, buff, MAX_BUFF_SIZE)) > 0)
+	while ((count = FS::Read(in, buff, max_write_size)) > 0)
 	{
 		if (count < 0)
 		{

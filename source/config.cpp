@@ -12,7 +12,7 @@ extern "C"
 }
 
 bool swap_xo;
-SmbSettings *smb_settings;
+FtpSettings *smb_settings;
 char local_directory[255];
 char remote_directory[255];
 char app_ver[6];
@@ -20,7 +20,8 @@ char last_site[32];
 char display_site[32];
 char language[128];
 std::vector<std::string> sites;
-std::map<std::string, SmbSettings> site_settings;
+std::map<std::string, FtpSettings> site_settings;
+SmbClient *smbclient;
 
 namespace CONFIG
 {
@@ -37,6 +38,9 @@ namespace CONFIG
         OpenIniFile(CONFIG_INI_FILE);
 
         // Load global config
+        swap_xo = ReadBool(CONFIG_GLOBAL, CONFIG_SWAP_XO, false);
+        WriteBool(CONFIG_GLOBAL, CONFIG_SWAP_XO, swap_xo);
+
         sprintf(language, "%s", ReadString(CONFIG_GLOBAL, CONFIG_LANGUAGE, ""));
         WriteString(CONFIG_GLOBAL, CONFIG_LANGUAGE, language);
 
@@ -48,13 +52,13 @@ namespace CONFIG
 
         for (int i = 0; i < sites.size(); i++)
         {
-            SmbSettings setting;
+            FtpSettings setting;
             sprintf(setting.site_name, "%s", sites[i].c_str());
 
             sprintf(setting.server_ip, "%s", ReadString(sites[i].c_str(), CONFIG_SMB_SERVER_IP, ""));
             WriteString(sites[i].c_str(), CONFIG_SMB_SERVER_IP, setting.server_ip);
 
-            setting.server_port = ReadInt(sites[i].c_str(), CONFIG_SMB_SERVER_PORT, 445);
+            setting.server_port = ReadInt(sites[i].c_str(), CONFIG_SMB_SERVER_PORT, 21);
             WriteInt(sites[i].c_str(), CONFIG_SMB_SERVER_PORT, setting.server_port);
 
             sprintf(setting.share, "%s", ReadString(sites[i].c_str(), CONFIG_SMB_SERVER_SHARE, ""));

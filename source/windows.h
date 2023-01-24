@@ -6,7 +6,6 @@
 #include <imgui_internal.h>
 #include <set>
 #include "fs.h"
-#include "smbclient.h"
 #include "actions.h"
 
 #define LOCAL_BROWSER 1
@@ -14,7 +13,6 @@
 
 extern int view_mode;
 extern bool handle_updates;
-extern SmbClient *smbclient;
 extern int64_t bytes_transfered;
 extern int64_t bytes_to_download;
 extern std::vector<FsEntry> local_files;
@@ -198,7 +196,6 @@ namespace Windows
     void AfterRemoteFileChangesCallback(int ime_result);
     void AfterFolderNameCallback(int ime_result);
     void CancelActionCallBack(int ime_result);
-    void AfterServerPortChangeCallback(int ime_result);
 }
 
 #endif

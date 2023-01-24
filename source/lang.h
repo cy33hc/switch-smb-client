@@ -11,8 +11,8 @@
 	FUNC(STR_REMOTE)                   \
 	FUNC(STR_MESSAGES)                 \
 	FUNC(STR_UPDATE_SOFTWARE)          \
-	FUNC(STR_CONNECT_FTP)              \
-	FUNC(STR_DISCONNECT_FTP)           \
+	FUNC(STR_CONNECT_SMB)              \
+	FUNC(STR_DISCONNECT_SMB)           \
 	FUNC(STR_SEARCH)                   \
 	FUNC(STR_REFRESH)                  \
 	FUNC(STR_SERVER)                   \

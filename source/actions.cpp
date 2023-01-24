@@ -36,7 +36,7 @@ namespace Actions
         }
         FS::Sort(local_files);
         if (err != 0)
-            sprintf(status_message, "%s", lang_strings[STR_FAIL_READ_LOCAL_DIR_MSG]);
+            sprintf(status_message, lang_strings[STR_FAIL_READ_LOCAL_DIR_MSG]);
     }
 
     void RefreshRemoteFiles(bool apply_filter)
@@ -44,7 +44,7 @@ namespace Actions
         if (!smbclient->Ping())
         {
             smbclient->Quit();
-            sprintf(status_message, "%s", lang_strings[STR_CONNECTION_CLOSE_ERR_MSG]);
+            sprintf(status_message, lang_strings[STR_CONNECTION_CLOSE_ERR_MSG]);
             return;
         }
 
@@ -70,6 +70,7 @@ namespace Actions
             remote_files = smbclient->ListDir(remote_directory);
         }
         FS::Sort(remote_files);
+        sprintf(status_message, "%s", smbclient->LastResponse());
     }
 
     void HandleChangeLocalDirectory(const FsEntry entry)
@@ -84,7 +85,7 @@ namespace Actions
             {
                 if (temp_path.find_last_of("/") == 0)
                 {
-                    sprintf(local_directory, "%s", "/");
+                    sprintf(local_directory, "/");
                 }
                 else
                 {
@@ -113,7 +114,7 @@ namespace Actions
         if (!smbclient->Ping())
         {
             smbclient->Quit();
-            sprintf(status_message, "%s", lang_strings[STR_CONNECTION_CLOSE_ERR_MSG]);
+            sprintf(status_message, lang_strings[STR_CONNECTION_CLOSE_ERR_MSG]);
             return;
         }
 
@@ -124,7 +125,7 @@ namespace Actions
             {
                 if (temp_path.find_last_of("/") == 0)
                 {
-                    sprintf(remote_directory, "%s", "/");
+                    sprintf(remote_directory, "/");
                 }
                 else
                 {
@@ -197,7 +198,7 @@ namespace Actions
         }
     }
 
-    void RenameLocalFolder(const char *old_path, const char *new_path)
+    void RenameLocalFolder(char *old_path, char *new_path)
     {
         sprintf(status_message, "%s", "");
         std::string new_name = std::string(new_path);
@@ -208,7 +209,7 @@ namespace Actions
         sprintf(local_file_to_select, "%s", new_name.c_str());
     }
 
-    void RenameRemoteFolder(const char *old_path, const char *new_path)
+    void RenameRemoteFolder(char *old_path, char *new_path)
     {
         sprintf(status_message, "%s", "");
         std::string new_name = std::string(new_path);
@@ -272,7 +273,7 @@ namespace Actions
         else
         {
             sprintf(status_message, "%s", lang_strings[STR_CONNECTION_CLOSE_ERR_MSG]);
-            DisconnectFTP();
+            DisconnectSMB();
         }
         activity_inprogess = false;
         Windows::SetModalMode(false);
@@ -350,7 +351,7 @@ namespace Actions
                     return 1;
 
                 int path_length = strlen(dest) + strlen(entries[i].name) + 2;
-                char *new_path = (char *)malloc(path_length);
+                char *new_path = malloc(path_length);
                 snprintf(new_path, path_length, "%s%s%s", dest, FS::hasEndSlash(dest) ? "" : "/", entries[i].name);
 
                 if (entries[i].isDir)
@@ -384,7 +385,7 @@ namespace Actions
         else
         {
             int path_length = strlen(dest) + strlen(src.name) + 2;
-            char *new_path = (char *)malloc(path_length);
+            char *new_path = malloc(path_length);
             snprintf(new_path, path_length, "%s%s%s", dest, FS::hasEndSlash(dest) ? "" : "/", src.name);
             snprintf(activity_message, 1024, "%s %s", lang_strings[STR_UPLOADING], src.name);
             bytes_to_download = src.file_size;
@@ -426,15 +427,9 @@ namespace Actions
 
     void UploadFiles()
     {
-        sprintf(status_message, "%s", "");
         int res = threadCreate(&bk_activity_thid, UploadFilesThread, NULL, NULL, 0x10000, 0x3B, -2);
         if (R_FAILED(res))
         {
-            activity_inprogess = false;
-            file_transfering = false;
-            multi_selected_local_files.clear();
-            Windows::SetModalMode(false);
-            selected_action = ACTION_REFRESH_REMOTE_FILES;
             threadClose(&bk_activity_thid);
         }
         else
@@ -448,7 +443,7 @@ namespace Actions
         if (!smbclient->Ping())
         {
             smbclient->Quit();
-            sprintf(status_message, "%s", lang_strings[STR_CONNECTION_CLOSE_ERR_MSG]);
+            sprintf(status_message, lang_strings[STR_CONNECTION_CLOSE_ERR_MSG]);
             return 0;
         }
 
@@ -499,7 +494,7 @@ namespace Actions
                     return 1;
 
                 int path_length = strlen(dest) + strlen(entries[i].name) + 2;
-                char *new_path = (char *)malloc(path_length);
+                char *new_path = malloc(path_length);
                 snprintf(new_path, path_length, "%s%s%s", dest, FS::hasEndSlash(dest) ? "" : "/", entries[i].name);
 
                 if (entries[i].isDir)
@@ -532,7 +527,7 @@ namespace Actions
         else
         {
             int path_length = strlen(dest) + strlen(src.name) + 2;
-            char *new_path = (char *)malloc(path_length);
+            char *new_path = malloc(path_length);
             snprintf(new_path, path_length, "%s%s%s", dest, FS::hasEndSlash(dest) ? "" : "/", src.name);
             snprintf(activity_message, 1024, "%s %s", lang_strings[STR_DOWNLOADING], src.path);
             ret = DownloadFile(src.path, new_path);
@@ -574,14 +569,9 @@ namespace Actions
     void DownloadFiles()
     {
         sprintf(status_message, "%s", "");
-        int res = threadCreate(&bk_activity_thid, DownloadFilesThread, NULL, NULL, 0x10000, 0x3B, -2);
+        sprintf(status_message, "%s", "");        int res = threadCreate(&bk_activity_thid, DownloadFilesThread, NULL, NULL, 0x10000, 0x3B, -2);
         if (R_FAILED(res))
         {
-            file_transfering = false;
-            activity_inprogess = false;
-            multi_selected_remote_files.clear();
-            Windows::SetModalMode(false);
-            selected_action = ACTION_REFRESH_LOCAL_FILES;
             threadClose(&bk_activity_thid);
         }
         else
@@ -590,7 +580,7 @@ namespace Actions
         }
     }
 
-    void ConnectFTP()
+    void ConnectSMB()
     {
         CONFIG::SaveConfig();
         if (smbclient->Connect(smb_settings->server_ip, smb_settings->server_port, smb_settings->share, smb_settings->username, smb_settings->password))
@@ -604,14 +594,14 @@ namespace Actions
         selected_action = ACTION_NONE;
     }
 
-    void DisconnectFTP()
+    void DisconnectSMB()
     {
         if (smbclient->IsConnected())
             smbclient->Quit();
         multi_selected_remote_files.clear();
         remote_files.clear();
-        sprintf(remote_directory, "%s", "/");
-        sprintf(status_message, "%s", "");
+        sprintf(remote_directory, "/");
+        sprintf(status_message, "");
     }
 
     void SelectAllLocalFiles()

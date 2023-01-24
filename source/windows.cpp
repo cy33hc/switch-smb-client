@@ -6,7 +6,6 @@
 #include "fs.h"
 #include "config.h"
 #include "gui.h"
-#include "smbclient.h"
 #include "actions.h"
 #include "util.h"
 #include "lang.h"
@@ -32,7 +31,6 @@ static int ime_field_size;
 static char txt_server_port[6];
 
 bool handle_updates = false;
-SmbClient *smbclient;
 int64_t bytes_transfered;
 int64_t bytes_to_download;
 std::vector<FsEntry> local_files;
@@ -133,7 +131,7 @@ namespace Windows
 
         if ((pad_prev & HidNpadButton_Plus) && !(pad & HidNpadButton_Plus) && !paused)
         {
-            selected_action = ACTION_DISCONNECT_FTP_AND_EXIT;
+            selected_action = ACTION_DISCONNECT_SMB_AND_EXIT;
         }
 
         pad_prev = pad;
@@ -167,10 +165,10 @@ namespace Windows
             ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
             ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.3f);
         }
-        if (ImGui::Button(lang_strings[STR_CONNECT_FTP], ImVec2(110, 25)))
+        if (ImGui::Button(lang_strings[STR_CONNECT_SMB], ImVec2(110, 25)))
         {
             smb_settings->server_port = atoi(txt_server_port);
-            selected_action = ACTION_CONNECT_FTP;
+            selected_action = ACTION_CONNECT_SMB;
         }
         if (is_connected)
         {
@@ -180,7 +178,7 @@ namespace Windows
         if (ImGui::IsItemHovered())
         {
             ImGui::BeginTooltip();
-            ImGui::Text(lang_strings[STR_CONNECT_FTP]);
+            ImGui::Text(lang_strings[STR_CONNECT_SMB]);
             ImGui::EndTooltip();
         }
         ImGui::SameLine();
@@ -190,9 +188,9 @@ namespace Windows
             ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
             ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.3f);
         }
-        if (ImGui::Button(lang_strings[STR_DISCONNECT_FTP], ImVec2(140, 25)))
+        if (ImGui::Button(lang_strings[STR_DISCONNECT_SMB], ImVec2(140, 25)))
         {
-            selected_action = ACTION_DISCONNECT_FTP;
+            selected_action = ACTION_DISCONNECT_SMB;
         }
         if (!is_connected)
         {
@@ -202,7 +200,7 @@ namespace Windows
         if (ImGui::IsItemHovered())
         {
             ImGui::BeginTooltip();
-            ImGui::Text( lang_strings[STR_DISCONNECT_FTP]);
+            ImGui::Text(lang_strings[STR_DISCONNECT_SMB]);
             ImGui::EndTooltip();
         }
         ImGui::SameLine();
@@ -247,7 +245,6 @@ namespace Windows
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
         ImGui::TextColored(colors[ImGuiCol_ButtonHovered], "%s:", lang_strings[STR_SHARE]);
         ImGui::SameLine();
-
         sprintf(id, "%s##share", smb_settings->share);
         if (ImGui::Button(id, ImVec2(100, 0)))
         {
@@ -255,7 +252,7 @@ namespace Windows
             ResetImeCallbacks();
             ime_field_size = 255;
             ime_callback = SingleValueImeCallback;
-            Dialog::initImeDialog(lang_strings[STR_SHARE], smb_settings->share, 255, SwkbdType_Normal, 0, 0);
+            Dialog::initImeDialog(lang_strings[STR_USERNAME], smb_settings->share, 255, SwkbdType_Normal, 0, 0);
             gui_mode = GUI_MODE_IME;
         }
         ImGui::SameLine();
@@ -301,7 +298,6 @@ namespace Windows
             ResetImeCallbacks();
             ime_field_size = 5;
             ime_callback = SingleValueImeCallback;
-            ime_after_update = AfterServerPortChangeCallback;
             Dialog::initImeDialog(lang_strings[STR_PORT], txt_server_port, 5, SwkbdType_NumPad, 0, 0);
             gui_mode = GUI_MODE_IME;
         }
@@ -959,7 +955,7 @@ namespace Windows
                 if (file_transfering)
                 {
                     static float progress = 0.0f;
-                    progress = bytes_transfered * 1.0f / (float)bytes_to_download;
+                    progress = (float)bytes_transfered / (float)bytes_to_download;
                     ImGui::ProgressBar(progress, ImVec2(505, 0));
                 }
 
@@ -1123,14 +1119,14 @@ namespace Windows
             multi_selected_remote_files.clear();
             selected_action = ACTION_NONE;
             break;
-        case ACTION_CONNECT_FTP:
-            Actions::ConnectFTP();
+        case ACTION_CONNECT_SMB:
+            Actions::ConnectSMB();
             break;
-        case ACTION_DISCONNECT_FTP:
-            Actions::DisconnectFTP();
+        case ACTION_DISCONNECT_SMB:
+            Actions::DisconnectSMB();
             break;
-        case ACTION_DISCONNECT_FTP_AND_EXIT:
-            Actions::DisconnectFTP();
+        case ACTION_DISCONNECT_SMB_AND_EXIT:
+            Actions::DisconnectSMB();
             done = true;
             break;
         default:
@@ -1179,14 +1175,6 @@ namespace Windows
                 ResetImeCallbacks();
                 gui_mode = GUI_MODE_BROWSER;
             }
-        }
-    }
-
-    void AfterServerPortChangeCallback(int ime_result)
-    {
-        if (ime_result == IME_DIALOG_RESULT_FINISHED)
-        {
-            smb_settings->server_port = atoi(txt_server_port);
         }
     }
 

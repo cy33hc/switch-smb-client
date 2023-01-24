@@ -5,12 +5,16 @@
 #include <vector>
 #include <algorithm>
 #include <map>
+#include "smbclient.h"
 
 #define APP_ID "switch-smb-client"
 #define DATA_PATH "/switch/" APP_ID
 #define CONFIG_INI_FILE DATA_PATH "/config.ini"
 
 #define CONFIG_GLOBAL "Global"
+
+#define CONFIG_DEFAULT_STYLE_NAME "Default"
+#define CONFIG_SWAP_XO "swap_xo"
 
 #define CONFIG_SMB_SERVER_NAME "smb_server_name"
 #define CONFIG_SMB_SERVER_IP "smb_server_ip"
@@ -26,7 +30,7 @@
 
 #define CONFIG_LANGUAGE "language"
 
-struct SmbSettings
+struct FtpSettings
 {
     char site_name[32];
     char server_ip[16];
@@ -36,15 +40,17 @@ struct SmbSettings
     char share[256];
 };
 
+extern bool swap_xo;
 extern std::vector<std::string> sites;
-extern std::map<std::string, SmbSettings> site_settings;
+extern std::map<std::string, FtpSettings> site_settings;
 extern char local_directory[255];
 extern char remote_directory[255];
 extern char app_ver[6];
 extern char last_site[32];
 extern char display_site[32];
 extern char language[128];
-extern SmbSettings *smb_settings;
+extern FtpSettings *smb_settings;
+extern SmbClient *smbclient;
 
 namespace CONFIG
 {

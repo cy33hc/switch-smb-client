@@ -5,7 +5,7 @@ Simple SMB client for the Switch. Allows you to transfer files between the Switc
 ![Preview](/screenshot.jpg)
 
 ## Installation
-Copy the **switch-smb-client.nro** in to the folder **/switch/switch-smb-client** of the SD card
+Copy the **switch-smb-client.nro** in to the folder **/switch/switch-smb-client** of the SD card. Install the forwarder NSP **switch-smb-client.nsp**.
 
 ## Controls
 ```

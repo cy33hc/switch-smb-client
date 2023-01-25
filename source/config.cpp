@@ -12,7 +12,7 @@ extern "C"
 }
 
 bool swap_xo;
-FtpSettings *smb_settings;
+SmbSettings *smb_settings;
 char local_directory[255];
 char remote_directory[255];
 char app_ver[6];
@@ -20,7 +20,7 @@ char last_site[32];
 char display_site[32];
 char language[128];
 std::vector<std::string> sites;
-std::map<std::string, FtpSettings> site_settings;
+std::map<std::string, SmbSettings> site_settings;
 SmbClient *smbclient;
 
 namespace CONFIG
@@ -52,7 +52,7 @@ namespace CONFIG
 
         for (int i = 0; i < sites.size(); i++)
         {
-            FtpSettings setting;
+            SmbSettings setting;
             sprintf(setting.site_name, "%s", sites[i].c_str());
 
             sprintf(setting.server_ip, "%s", ReadString(sites[i].c_str(), CONFIG_SMB_SERVER_IP, ""));

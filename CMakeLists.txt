@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16.3)
 # or use: /opt/devkitpro/portlibs/switch/bin/aarch64-none-elf-cmake
 include(/opt/devkitpro/cmake/Switch.cmake)
 project(switch-smb-client VERSION 1.0.0 LANGUAGES C CXX)
-set(TITLE_NAME "Switch smb Client")
+set(TITLE_NAME "Switch SMB Client")
 set(PROJECT_AUTHOR "cy33hc")
 
 if(NOT CMAKE_BUILD_TYPE)

@@ -258,6 +258,11 @@ namespace GUI
 			io.Fonts->AddFontFromMemoryTTF(standard.address, standard.size, 18.0f, &font_cfg, io.Fonts->GetGlyphRangesJapanese());
 		}
 
+		if (fontType & FONT_TYPE_THAI)
+		{
+			io.Fonts->AddFontFromMemoryTTF(standard.address, standard.size, 18.0f, &font_cfg, symbols);
+			io.Fonts->AddFontFromFileTTF("romfs:/lang/Roboto_ext.ttf", 18.0f, &font_cfg, io.Fonts->GetGlyphRangesThai());
+		}
 		io.Fonts->Flags |= ImFontAtlasFlags_NoPowerOfTwoHeight;
 		io.Fonts->Build();
 

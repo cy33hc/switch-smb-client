@@ -30,7 +30,7 @@
 
 #define CONFIG_LANGUAGE "language"
 
-struct FtpSettings
+struct SmbSettings
 {
     char site_name[32];
     char server_ip[16];
@@ -42,14 +42,14 @@ struct FtpSettings
 
 extern bool swap_xo;
 extern std::vector<std::string> sites;
-extern std::map<std::string, FtpSettings> site_settings;
+extern std::map<std::string, SmbSettings> site_settings;
 extern char local_directory[255];
 extern char remote_directory[255];
 extern char app_ver[6];
 extern char last_site[32];
 extern char display_site[32];
 extern char language[128];
-extern FtpSettings *smb_settings;
+extern SmbSettings *smb_settings;
 extern SmbClient *smbclient;
 
 namespace CONFIG

@@ -42,6 +42,11 @@ namespace Services
     {
       fontType = FONT_TYPE_JAPANESE;
     }
+    else if (strcasecmp(language, "Thai") == 0)
+    {
+      fontType = FONT_TYPE_THAI;
+    }
+
     GUI::Init(fontType);
     plExit();
     romfsExit();

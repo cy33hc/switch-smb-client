@@ -43,8 +43,8 @@ ACTIONS selected_action;
 char status_message[1024];
 char local_file_to_select[256];
 char remote_file_to_select[256];
-char local_filter[32];
-char remote_filter[32];
+char local_filter[64];
+char remote_filter[64];
 char editor_text[1024];
 char activity_message[1024];
 int selected_browser = 0;
@@ -146,7 +146,7 @@ namespace Windows
     {
         ImGuiStyle *style = &ImGui::GetStyle();
         ImVec4 *colors = style->Colors;
-        static char title[32];
+        static char title[64];
         sprintf(title, "SMB %s", lang_strings[STR_CONNECTION_SETTINGS]);
         BeginGroupPanel(title, ImVec2(1265, 100));
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 10);
@@ -204,11 +204,10 @@ namespace Windows
             ImGui::EndTooltip();
         }
         ImGui::SameLine();
-
         ImGui::SetNextItemWidth(80);
         if (ImGui::BeginCombo("##Site", display_site, ImGuiComboFlags_PopupAlignLeft | ImGuiComboFlags_HeightLargest | ImGuiComboFlags_NoArrowButton))
         {
-            static char site_id[16];
+            static char site_id[32];
             for (int n = 0; n < sites.size(); n++)
             {
                 const bool is_selected = strcmp(sites[n].c_str(), last_site) == 0;
@@ -366,9 +365,9 @@ namespace Windows
         {
             ime_single_field = local_filter;
             ResetImeCallbacks();
-            ime_field_size = 31;
+            ime_field_size = 63;
             ime_callback = SingleValueImeCallback;
-            Dialog::initImeDialog(lang_strings[STR_FILTER], local_filter, 31, SwkbdType_Normal, 0, 0);
+            Dialog::initImeDialog(lang_strings[STR_FILTER], local_filter, 63, SwkbdType_Normal, 0, 0);
             gui_mode = GUI_MODE_IME;
         }
         ImGui::PopID();
@@ -509,9 +508,9 @@ namespace Windows
         {
             ime_single_field = remote_filter;
             ResetImeCallbacks();
-            ime_field_size = 31;
+            ime_field_size = 63;
             ime_callback = SingleValueImeCallback;
-            Dialog::initImeDialog(lang_strings[STR_FILTER], remote_filter, 31, SwkbdType_Normal, 0, 0);
+            Dialog::initImeDialog(lang_strings[STR_FILTER], remote_filter, 63, SwkbdType_Normal, 0, 0);
             gui_mode = GUI_MODE_IME;
         };
         ImGui::PopID();
@@ -814,7 +813,7 @@ namespace Windows
                 ImGui::NewLine();
                 ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 165);
                 ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5);
-                if (ImGui::Button(lang_strings[STR_NO], ImVec2(70, 0)))
+                if (ImGui::Button("No", ImVec2(70, 0)))
                 {
                     confirm_state = CONFIRM_NO;
                     selected_action = ACTION_NONE;
@@ -822,8 +821,9 @@ namespace Windows
                     ImGui::CloseCurrentPopup();
                 };
                 ImGui::SameLine();
-                if (ImGui::Button(lang_strings[STR_YES], ImVec2(70, 0)))
+                if (ImGui::Button("Yes", ImVec2(70, 0)))
                 {
+                    printf("Button pressed\n");
                     confirm_state = CONFIRM_YES;
                     selected_action = action_to_take;
                     SetModalMode(false);
@@ -983,7 +983,7 @@ namespace Windows
         (void)io;
         ImGui::SetMouseCursor(ImGuiMouseCursor_None);
 
-        if (ImGui::Begin("Ftp Client", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar))
+        if (ImGui::Begin("SMB Client", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar))
         {
             ConnectionPanel();
             ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 3);

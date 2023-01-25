@@ -1,11 +1,11 @@
-# switch-ftp-client
+# Switch SMB Client
 
-Simple FTP client for the switch
+Simple SMB client for the Switch. Allows you to transfer files between the Switch and your Windows Shares, Linux SMB Shares and NAS SMB shares
 
 ![Preview](/screenshot.jpg)
 
 ## Installation
-Copy the **switch-ftp-client.nro** in to the folder **/switch/switch-ftp-client** of the SD card and then install the **switch-ftp-client.nsp**
+Copy the **switch-smb-client.nro** in to the folder **/switch/switch-smb-client** of the SD card
 
 ## Controls
 ```
@@ -38,21 +38,22 @@ Simplified Chinese
 Traditional Chinese
 ```
 
-The following aren't standard languages supported by the switch, therefore requires a config file update.
+The following aren't standard languages supported by the Switch, therefore requires a config file update.
 ```
 Catalan
 Croatian
 Euskera
 Galego
+Greek
 Hungarian
 Indonesian
 Ryukyuan
+Thai
 ```
-User must modify the file **/switch/switch-ftp-client/config.ini** and update the **language** setting to with the **exact** values from the list above.
+User must modify the file **/switch/switch-smb-client/config.ini** located in the switch hard drive and update the **language** setting to with the **exact** values from the list above.
 
-**HELP:** There are no language translations for the following languages, therefore not support yet. Please help expand the list by submitting translation for the following languages. If you would like to help, please download this [Template](https://github.com/cy33hc/switch-ftp-client/blob/master/lang/English.ini), make your changes and submit an issue with the file attached.
+**HELP:** There are no language translations for the following languages, therefore not support yet. Please help expand the list by submitting translation for the following languages. If you would like to help, please download this [Template](https://github.com/cy33hc/switch-smb-client/blob/master/data/assets/langs/English.ini), make your changes and submit an issue with the file attached.
 ```
-Greek
 Finnish
 Swedish
 Danish
@@ -61,13 +62,14 @@ Turkish
 Arabic
 Czech
 Romanian
-Thai
 Vietnamese
 ```
 or any other language that you have a traslation for.
 
-## Credits
-Thx to the author of the imgui_decko3d_example which I used as a base to create this app.
-https://github.com/scturtle/imgui_deko3d_example
+## Building
+Before build the app, you need to build the dependencies first.
+Clone the following Git repos and build them in order
 
-The color theme was borrowed from NX-Shell.
+openssl - https://github.com/cy33hc/ps4-openssl/tree/OpenSSL_1_1_1-switch
+
+libsmb2 - https://github.com/cy33hc/libsmb2/tree/switch

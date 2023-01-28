@@ -5,7 +5,7 @@ Simple SMB client for the Switch. Allows you to transfer files between the Switc
 ![Preview](/screenshot.jpg)
 
 ## Installation
-Copy the **switch-smb-client.nro** in to the folder **/switch/switch-smb-client** of the SD card
+Copy the **switch-smb-client.nro** in to the folder **/switch/switch-smb-client** of the SD card. Install the forwarder NSP **switch-smb-client.nsp**.
 
 ## Controls
 ```
@@ -52,7 +52,7 @@ Thai
 ```
 User must modify the file **/switch/switch-smb-client/config.ini** located in the switch hard drive and update the **language** setting to with the **exact** values from the list above.
 
-**HELP:** There are no language translations for the following languages, therefore not support yet. Please help expand the list by submitting translation for the following languages. If you would like to help, please download this [Template](https://github.com/cy33hc/switch-smb-client/blob/master/data/assets/langs/English.ini), make your changes and submit an issue with the file attached.
+**HELP:** There are no language translations for the following languages, therefore not support yet. Please help expand the list by submitting translation for the following languages. If you would like to help, please download this [Template](https://github.com/cy33hc/switch-smb-client/blob/master/lang/English.ini), make your changes and submit an issue with the file attached.
 ```
 Finnish
 Swedish

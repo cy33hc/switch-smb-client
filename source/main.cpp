@@ -46,6 +46,10 @@ namespace Services
     {
       fontType = FONT_TYPE_THAI;
     }
+    else if (strcasecmp(language, "Arabic") == 0)
+    {
+      fontType = FONT_TYPE_ARABIC;
+    }
 
     GUI::Init(fontType);
     plExit();

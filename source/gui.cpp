@@ -203,6 +203,23 @@ namespace GUI
 			0,
 		};
 
+		const ImWchar arabic[] = { // Arabic
+			0x0020, 0x00FF, // Basic Latin + Latin Supplement
+			0x0100, 0x024F, // Latin Extended
+			0x0400, 0x052F, // Cyrillic + Cyrillic Supplement
+			0x1E00, 0x1EFF, // Latin Extended Additional
+			0x2000, 0x206F, // General Punctuation
+			0x2100, 0x214F, // Letterlike Symbols
+			0x2460, 0x24FF, // Enclosed Alphanumerics
+			0x0600, 0x06FF, // Arabic
+			0x0750, 0x077F, // Arabic Supplement
+			0x0870, 0x089F, // Arabic Extended-B
+			0x08A0, 0x08FF, // Arabic Extended-A
+			0xFB50, 0xFDFF, // Arabic Presentation Forms-A
+			0xFE70, 0xFEFF, // Arabic Presentation Forms-B
+			0,
+		};
+
 		bool ok = R_SUCCEEDED(plGetSharedFontByType(&standard, PlSharedFontType_Standard)) &&
 				  R_SUCCEEDED(plGetSharedFontByType(&extended, PlSharedFontType_NintendoExt));
 
@@ -263,6 +280,13 @@ namespace GUI
 			io.Fonts->AddFontFromMemoryTTF(standard.address, standard.size, 18.0f, &font_cfg, symbols);
 			io.Fonts->AddFontFromFileTTF("romfs:/lang/Roboto_ext.ttf", 18.0f, &font_cfg, io.Fonts->GetGlyphRangesThai());
 		}
+
+		if (fontType & FONT_TYPE_ARABIC)
+		{
+			io.Fonts->AddFontFromMemoryTTF(standard.address, standard.size, 18.0f, &font_cfg, symbols);
+			io.Fonts->AddFontFromFileTTF("romfs:/lang/Roboto_ext.ttf", 18.0f, &font_cfg, arabic);
+		}
+
 		io.Fonts->Flags |= ImFontAtlasFlags_NoPowerOfTwoHeight;
 		io.Fonts->Build();
 

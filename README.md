@@ -1,3 +1,5 @@
+# This repo is archived, please refer to the superceded version. https://github.com/cy33hc/switch-ezremote-client
+
 # Switch SMB Client
 
 Simple SMB client for the Switch. Allows you to transfer files between the Switch and your Windows Shares, Linux SMB Shares and NAS SMB shares
